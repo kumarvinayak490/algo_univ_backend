@@ -1,8 +1,20 @@
-from django.http import JsonResponse
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from django.contrib.auth.models import User
+from rest_framework import permissions
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import status
+from rest_framework.views import APIView
+from .serializers import UserSerializer
+from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import AllowAny
+
+
+class UserCreateAPIView(CreateAPIView):
+    model = User
+    permission_classes = [
+        permissions.AllowAny  # Or anon users can't register
+    ]
+    serializer_class = UserSerializer
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -19,9 +31,3 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
-
-
-@api_view(['GET'])
-def getRoutes(request):
-    routes = ["/api/token", "/api/token/refresh"]
-    return Response(routes)
