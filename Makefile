@@ -16,7 +16,7 @@ superuser:
 
 .PHONY: runserver
 runserver:
-	poetry run python -m manage runserver
+	poetry run python -m manage runserver 0:80
 
 .PHONY: update
 update: install migrate ;
