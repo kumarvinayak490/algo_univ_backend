@@ -7,6 +7,18 @@ from .serializers import CodeSubmissionSerializer
 from core.celery import execute_code
 
 
+class TaskStatusView(APIView):
+    def get(self, request, *args, **kwargs):
+        task_id = self.kwargs.get('task_id')
+        task = execute_code.AsyncResult(task_id)
+        response_data = {
+            'task_id': task_id,
+            'status': task.status,
+            'result': task.result,
+        }
+        return Response(response_data)
+
+
 class SubmitCodeAPIView(APIView):
     permission_classes = [IsAuthenticated]
 

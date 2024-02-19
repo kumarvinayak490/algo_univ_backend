@@ -21,5 +21,9 @@ runserver:
 .PHONY: update
 update: install migrate ;
 
+.PHONY: worker
+worker: 
+	celery -A core worker --loglevel=INFO
+
 
 
