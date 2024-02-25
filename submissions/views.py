@@ -20,12 +20,11 @@ class TaskStatusView(APIView):
 
 
 class SubmitCodeAPIView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer = CodeSubmissionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            serializer.save()
             code = serializer.validated_data.get('code')
             result = execute_code.delay(code)
             return Response({'task_id': result.id}, status=status.HTTP_201_CREATED)
@@ -33,9 +32,7 @@ class SubmitCodeAPIView(APIView):
 
 
 class ViewSubmissionsAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def get(self, request):
-        submissions = CodeSubmission.objects.filter(user=request.user)
+        submissions = CodeSubmission.objects.all()
         serializer = CodeSubmissionSerializer(submissions, many=True)
         return Response(serializer.data)

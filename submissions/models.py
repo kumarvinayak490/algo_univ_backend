@@ -13,7 +13,7 @@ class CodeSubmission(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)
     verdict = models.CharField(max_length=20, null=True, blank=True)
     output = models.TextField(null=True, blank=True)
-    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    # user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Code submission by {self.user.username} at {self.submitted_at}"
+        return f"Code submitted  {self.code}"
